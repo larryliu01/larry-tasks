@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { TeddyCustomization, TeddyAccessory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Palette, Hat, Shirt } from 'lucide-react';
+import { Settings, Palette, ShoppingBag, User } from 'lucide-react';
 
 type TeddySettingsProps = {
   customization: TeddyCustomization;
@@ -68,11 +67,11 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
               Appearance
             </TabsTrigger>
             <TabsTrigger value="accessories" className="flex items-center">
-              <Hat className="mr-2 h-4 w-4" />
+              <ShoppingBag className="mr-2 h-4 w-4" />
               Accessories
             </TabsTrigger>
             <TabsTrigger value="name" className="flex items-center">
-              <Shirt className="mr-2 h-4 w-4" />
+              <User className="mr-2 h-4 w-4" />
               Name
             </TabsTrigger>
           </TabsList>

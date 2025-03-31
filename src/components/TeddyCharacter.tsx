@@ -52,6 +52,7 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
           { "animate-wiggle": animate },
           { "bg-teddy-dark": emotion === 'excited', "bg-teddy-light": emotion === 'neutral', "bg-teddy": emotion === 'happy' }
         )}
+        style={{backgroundColor: customization.color.replace('bg-', '')}}
       >
         {/* Teddy face */}
         <div className="absolute w-32 h-32 bg-teddy-light rounded-full top-6 left-4"></div>
