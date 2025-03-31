@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { format, isToday, isThisWeek, addDays } from 'date-fns';
 import { CheckCircle, Calendar, Flame, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import AnimatedProgress from './AnimatedProgress';
 
 type HabitTrackerProps = {
   habits: Habit[];
@@ -93,7 +94,7 @@ const HabitTracker = ({ habits, onCompleteHabit, onAddHabit }: HabitTrackerProps
                     type="radio"
                     value="weekly"
                     checked={newHabit.frequency === 'weekly'}
-                    onChange={() => setNewHabit({...newHabit, frequency: 'weekly'})}
+                    onChange={() => setNewHabit({...newHabit, frequency: 'weekly' as 'daily'})}
                   />
                   <span>Weekly</span>
                 </label>
@@ -159,9 +160,10 @@ const HabitTracker = ({ habits, onCompleteHabit, onAddHabit }: HabitTrackerProps
                       {habit.daysCompleted.filter(d => isThisWeek(new Date(d))).length}/7 days
                     </span>
                   </div>
-                  <Progress
+                  <AnimatedProgress
                     value={(habit.daysCompleted.filter(d => isThisWeek(new Date(d))).length / 7) * 100}
                     className="h-2"
+                    color={habit.streak > 2 ? 'success' : 'default'}
                   />
                 </div>
               )}

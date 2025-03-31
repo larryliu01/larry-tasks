@@ -46,53 +46,109 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
 
   return (
     <div className="flex flex-col items-center">
-      <div 
-        className={cn(
-          "relative w-40 h-40 bg-teddy rounded-full mb-2 shadow-lg flex items-center justify-center",
-          { "animate-wiggle": animate },
-          { "bg-teddy-dark": emotion === 'excited', "bg-teddy-light": emotion === 'neutral', "bg-teddy": emotion === 'happy' }
-        )}
-        style={{backgroundColor: customization.color.replace('bg-', '')}}
-      >
-        {/* Teddy face */}
-        <div className="absolute w-32 h-32 bg-teddy-light rounded-full top-6 left-4"></div>
-        
-        {/* Eyes */}
-        <div className="absolute w-3 h-3 bg-black rounded-full top-16 left-14"></div>
-        <div className="absolute w-3 h-3 bg-black rounded-full top-16 right-14"></div>
-        
-        {/* Nose */}
-        <div className="absolute w-5 h-3 bg-teddy-dark rounded-full top-20 left-[72px]"></div>
-        
-        {/* Mouth - changes with emotion */}
-        {emotion === 'excited' && (
-          <div className="absolute w-10 h-5 bg-teddy-dark rounded-full top-24 left-[60px] flex items-center justify-center">
-            <div className="w-8 h-2 bg-white rounded-full"></div>
-          </div>
-        )}
-        {emotion === 'happy' && (
-          <div className="absolute w-8 h-3 border-b-2 border-teddy-dark rounded-full top-24 left-[64px]"></div>
-        )}
-        {emotion === 'neutral' && (
-          <div className="absolute w-6 h-1 bg-teddy-dark rounded-full top-24 left-[68px]"></div>
-        )}
-        
-        {/* Accessories based on customization */}
-        {customization.accessories.includes('hat') && (
-          <div className="absolute w-24 h-12 bg-lavender-dark rounded-full -top-6 left-8"></div>
-        )}
-        {customization.accessories.includes('scarf') && (
-          <div className="absolute w-36 h-8 bg-skyblue-dark rounded-md top-32 left-2"></div>
-        )}
-        {customization.accessories.includes('glasses') && (
-          <div className="absolute w-20 h-6 border-2 border-black rounded-full top-16 left-10"></div>
-        )}
-      </div>
+      <div className="cute-background w-full h-40 rounded-t-xl bg-gradient-to-b from-peach-light to-skyblue-light opacity-60"></div>
       
-      {/* Teddy's message bubble */}
-      <div className="bg-white rounded-xl p-3 shadow-md max-w-[200px] text-center relative">
-        <div className="absolute w-4 h-4 bg-white -top-2 left-1/2 transform -translate-x-1/2 rotate-45"></div>
-        <p className="text-sm font-cute">{message}</p>
+      <div className="relative -mt-20 flex flex-col items-center">
+        {/* Full body teddy character */}
+        <div 
+          className={cn(
+            "relative w-36 h-60 flex flex-col items-center justify-center transition-all duration-300",
+            { "animate-wiggle": animate }
+          )}
+        >
+          {/* Head */}
+          <div 
+            className={cn(
+              "w-40 h-40 rounded-full mb-2 shadow-lg flex items-center justify-center relative",
+              { "bg-teddy-dark": emotion === 'excited', "bg-teddy-light": emotion === 'neutral', "bg-teddy": emotion === 'happy' }
+            )}
+            style={{backgroundColor: customization.color}}
+          >
+            {/* Face */}
+            <div className="absolute w-32 h-32 bg-teddy-light rounded-full top-6 left-4"></div>
+            
+            {/* Eyes */}
+            <div className={cn(
+              "absolute w-3 h-3 bg-black rounded-full top-16 left-14 transition-all",
+              emotion === 'excited' && "h-4 animate-bounce-small"
+            )}></div>
+            <div className={cn(
+              "absolute w-3 h-3 bg-black rounded-full top-16 right-14 transition-all",
+              emotion === 'excited' && "h-4 animate-bounce-small"
+            )}></div>
+            
+            {/* Nose */}
+            <div className="absolute w-5 h-3 bg-teddy-dark rounded-full top-20 left-[72px]"></div>
+            
+            {/* Mouth - changes with emotion */}
+            {emotion === 'excited' && (
+              <div className="absolute w-10 h-5 bg-teddy-dark rounded-full top-24 left-[60px] flex items-center justify-center">
+                <div className="w-8 h-2 bg-white rounded-full"></div>
+              </div>
+            )}
+            {emotion === 'happy' && (
+              <div className="absolute w-8 h-3 border-b-2 border-teddy-dark rounded-full top-24 left-[64px]"></div>
+            )}
+            {emotion === 'neutral' && (
+              <div className="absolute w-6 h-1 bg-teddy-dark rounded-full top-24 left-[68px]"></div>
+            )}
+            
+            {/* Accessories based on customization */}
+            {customization.accessories.includes('hat') && (
+              <div className="absolute w-24 h-12 bg-lavender-dark rounded-full -top-6 left-8"></div>
+            )}
+            {customization.accessories.includes('glasses') && (
+              <div className="absolute w-20 h-6 border-2 border-black rounded-full top-16 left-10"></div>
+            )}
+          </div>
+          
+          {/* Body */}
+          <div 
+            className="w-28 h-28 rounded-t-[50%] -mt-10"
+            style={{backgroundColor: customization.color}}
+          ></div>
+          
+          {/* Arms */}
+          <div className="flex w-full justify-between -mt-20 z-10">
+            <div 
+              className={cn(
+                "w-8 h-20 rounded-full transform -rotate-12",
+                animate && "animate-wiggle"
+              )}
+              style={{backgroundColor: customization.color}}
+            ></div>
+            <div 
+              className={cn(
+                "w-8 h-20 rounded-full transform rotate-12",
+                animate && "animate-wiggle"
+              )}
+              style={{backgroundColor: customization.color}}
+            ></div>
+          </div>
+          
+          {/* Legs */}
+          <div className="flex justify-center gap-3 -mt-4">
+            <div 
+              className={cn("w-10 h-14 rounded-b-full")}
+              style={{backgroundColor: customization.color}}
+            ></div>
+            <div 
+              className={cn("w-10 h-14 rounded-b-full")}
+              style={{backgroundColor: customization.color}}
+            ></div>
+          </div>
+          
+          {/* Scarf accessory */}
+          {customization.accessories.includes('scarf') && (
+            <div className="absolute w-36 h-8 bg-skyblue-dark rounded-md top-32 left-0"></div>
+          )}
+        </div>
+        
+        {/* Teddy's message bubble */}
+        <div className="bg-white rounded-xl p-3 shadow-md max-w-[200px] text-center relative mt-4">
+          <div className="absolute w-4 h-4 bg-white -top-2 left-1/2 transform -translate-x-1/2 rotate-45"></div>
+          <p className="text-sm font-cute">{message}</p>
+        </div>
       </div>
     </div>
   );

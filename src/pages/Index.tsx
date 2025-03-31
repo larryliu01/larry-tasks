@@ -12,6 +12,7 @@ import AddTaskForm from '@/components/AddTaskForm';
 import HabitTracker from '@/components/HabitTracker';
 import GoalTracker from '@/components/GoalTracker';
 import TeddySettings from '@/components/TeddySettings';
+import DateTime from '@/components/DateTime';
 
 const initialTasks: Task[] = [
   {
@@ -278,7 +279,7 @@ const Index = () => {
     <div className="min-h-screen py-6 px-4 md:px-8 max-w-7xl mx-auto">
       <WeatherBackground />
       
-      <header className="mb-8 flex flex-col md:flex-row justify-between items-center">
+      <header className="mb-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <h1 className="text-3xl font-bold font-cute">Teddy Tasks</h1>
         </div>
@@ -291,14 +292,36 @@ const Index = () => {
         </div>
       </header>
       
+      <div className="mb-6">
+        <DateTime />
+      </div>
+      
       <main className="grid grid-cols-1 lg:grid-cols-7 gap-6">
         <div className="lg:col-span-2 order-1 flex flex-col items-center">
-          <div className="glass rounded-2xl p-6 w-full flex justify-center">
-            <TeddyCharacter 
-              tasks={tasks}
-              habits={habits}
-              customization={teddyCustomization}
-            />
+          <div className="glass rounded-2xl p-6 w-full flex justify-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-lavender-light via-peach-light to-skyblue-light opacity-30"></div>
+            <div className="stars absolute inset-0">
+              {[...Array(20)].map((_, i) => (
+                <div 
+                  key={i}
+                  className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`,
+                    opacity: Math.random() * 0.7 + 0.3
+                  }}
+                ></div>
+              ))}
+            </div>
+            
+            <div className="relative z-10">
+              <TeddyCharacter 
+                tasks={tasks}
+                habits={habits}
+                customization={teddyCustomization}
+              />
+            </div>
           </div>
           
           <div className="mt-6 w-full">
