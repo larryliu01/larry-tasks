@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Task, Habit, Goal, TeddyCustomization, TeddyAccessory } from '@/types';
@@ -14,7 +13,6 @@ import HabitTracker from '@/components/HabitTracker';
 import GoalTracker from '@/components/GoalTracker';
 import TeddySettings from '@/components/TeddySettings';
 
-// Initial sample data
 const initialTasks: Task[] = [
   {
     id: uuidv4(),
@@ -83,7 +81,6 @@ const initialCustomization: TeddyCustomization = {
 const Index = () => {
   const { toast } = useToast();
   
-  // State for all our data
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('teddy-tasks');
     return saved ? JSON.parse(saved) : initialTasks;
@@ -109,7 +106,6 @@ const Index = () => {
     return saved ? JSON.parse(saved) : initialAccessories;
   });
   
-  // Save to localStorage whenever our data changes
   useEffect(() => {
     localStorage.setItem('teddy-tasks', JSON.stringify(tasks));
     localStorage.setItem('teddy-habits', JSON.stringify(habits));
@@ -118,7 +114,6 @@ const Index = () => {
     localStorage.setItem('teddy-accessories', JSON.stringify(accessories));
   }, [tasks, habits, goals, teddyCustomization, accessories]);
   
-  // Handler functions for tasks
   const handleAddTask = (newTask: Omit<Task, 'id' | 'completed' | 'createdAt'>) => {
     const task: Task = {
       ...newTask,
@@ -143,7 +138,6 @@ const Index = () => {
         description: 'Great job! Keep up the good work.',
       });
       
-      // Check if we should unlock any accessories
       const completedCount = tasks.filter(t => t.completed).length + 1;
       if (completedCount % 5 === 0) {
         const lockedAccessories = accessories.filter(a => !a.unlocked);
@@ -170,7 +164,6 @@ const Index = () => {
     });
   };
   
-  // Handler functions for habits
   const handleAddHabit = (newHabit: Omit<Habit, 'id' | 'createdAt' | 'streak' | 'daysCompleted'>) => {
     const habit: Habit = {
       ...newHabit,
@@ -198,16 +191,14 @@ const Index = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      // For daily habits, check if it was completed today
       if (isDaily && lastCompletedDate) {
         const lastDate = new Date(lastCompletedDate);
         lastDate.setHours(0, 0, 0, 0);
         
         if (lastDate.getTime() === today.getTime()) {
-          return habit; // Already completed today
+          return habit;
         }
         
-        // Check if the streak is continuous
         const yesterday = new Date(today);
         yesterday.setDate(yesterday.getDate() - 1);
         
@@ -221,18 +212,17 @@ const Index = () => {
         };
       } 
       
-      // For weekly habits, just check if it was completed this week
       const isThisWeekCompleted = habit.daysCompleted.some(date => {
         const d = new Date(date);
         const day = d.getDay();
-        const diff = today.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
         const thisMonday = new Date(today.setDate(diff));
         thisMonday.setHours(0, 0, 0, 0);
         return d >= thisMonday;
       });
       
       if (!isDaily && isThisWeekCompleted) {
-        return habit; // Already completed this week
+        return habit;
       }
       
       return {
@@ -245,11 +235,10 @@ const Index = () => {
     
     toast({
       title: 'Habit completed!',
-      description: 'You're building consistency. Keep it up!',
+      description: "You're building consistency. Keep it up!",
     });
   };
   
-  // Handler functions for goals
   const handleAddGoal = (newGoal: Omit<Goal, 'id' | 'createdAt'>) => {
     const goal: Goal = {
       ...newGoal,
@@ -282,7 +271,6 @@ const Index = () => {
     }
   };
   
-  // Filter completed and uncompleted tasks
   const completedTasks = tasks.filter(task => task.completed);
   const uncompletedTasks = tasks.filter(task => !task.completed);
   
@@ -304,7 +292,6 @@ const Index = () => {
       </header>
       
       <main className="grid grid-cols-1 lg:grid-cols-7 gap-6">
-        {/* Teddy Character - Left Side */}
         <div className="lg:col-span-2 order-1 flex flex-col items-center">
           <div className="glass rounded-2xl p-6 w-full flex justify-center">
             <TeddyCharacter 
@@ -331,7 +318,6 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Task Management - Right Side */}
         <div className="lg:col-span-5 order-2">
           <AddTaskForm onAddTask={handleAddTask} />
           

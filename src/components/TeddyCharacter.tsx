@@ -23,10 +23,10 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
     // Set teddy's emotion based on progress
     if (completionRate > 0.7 || streaks > 5) {
       setEmotion('excited');
-      setMessage('Wow! You're doing amazing!');
+      setMessage("Wow! You're doing amazing!");
     } else if (completionRate > 0.3 || streaks > 2) {
       setEmotion('happy');
-      setMessage('You're making great progress!');
+      setMessage("You're making great progress!");
     } else if (totalTasks === 0) {
       setEmotion('neutral');
       setMessage('Hi there! Add some tasks to get started!');
