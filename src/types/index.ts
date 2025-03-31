@@ -51,4 +51,5 @@ export type TeddyCustomization = {
   color: string;
   accessories: string[];
   name: string;
+  profileImage?: string; // Added this field for custom profile image
 };

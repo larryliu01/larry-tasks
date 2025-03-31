@@ -66,6 +66,7 @@ export const initialCustomization: TeddyCustomization = {
   color: 'bg-teddy',
   accessories: ['hat'],
   name: 'Teddy',
+  profileImage: undefined, // Added profile image property (initially undefined)
 };
 
 // Helper functions to handle localStorage

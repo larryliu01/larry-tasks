@@ -1,8 +1,11 @@
-import { useState } from 'react';
+
+import { useState, useRef } from 'react';
 import { TeddyCustomization, TeddyAccessory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Palette, ShoppingBag, User } from 'lucide-react';
+import { Settings, Palette, ShoppingBag, User, Image } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 
 type TeddySettingsProps = {
   customization: TeddyCustomization;
@@ -13,6 +16,8 @@ type TeddySettingsProps = {
 const TeddySettings = ({ customization, onUpdateCustomization, accessories }: TeddySettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localCustomization, setLocalCustomization] = useState<TeddyCustomization>(customization);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
   
   const colors = [
     { name: 'Brown', value: 'bg-teddy' },
@@ -41,6 +46,42 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
       });
     }
   };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Image too large",
+        description: "Please select an image smaller than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Convert image to base64
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      setLocalCustomization({
+        ...localCustomization,
+        profileImage: result
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setLocalCustomization({
+      ...localCustomization,
+      profileImage: undefined
+    });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   
   if (!isOpen) {
     return (
@@ -58,7 +99,7 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-lg w-full p-4 shadow-xl">
-        <h2 className="text-xl font-bold mb-4">Customize Your Teddy</h2>
+        <h2 className="text-xl font-bold mb-4">Customize Your Character</h2>
         
         <Tabs defaultValue="appearance">
           <TabsList className="w-full mb-4">
@@ -73,6 +114,10 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
             <TabsTrigger value="name" className="flex items-center">
               <User className="mr-2 h-4 w-4" />
               Name
+            </TabsTrigger>
+            <TabsTrigger value="profileImage" className="flex items-center">
+              <Image className="mr-2 h-4 w-4" />
+              My Image
             </TabsTrigger>
           </TabsList>
           
@@ -136,7 +181,7 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
           <TabsContent value="name">
             <div>
               <label htmlFor="teddyName" className="block font-medium mb-2">
-                Teddy's Name
+                Character Name
               </label>
               <input
                 id="teddyName"
@@ -145,8 +190,60 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
                 onChange={(e) => setLocalCustomization({...localCustomization, name: e.target.value})}
                 className="w-full p-2 border rounded mb-4"
                 maxLength={20}
-                placeholder="Name your teddy..."
+                placeholder="Name your character..."
               />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="profileImage">
+            <div>
+              <h3 className="font-medium mb-2">Upload Your Image</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Upload your own image to use as your character. This will replace the teddy bear.
+              </p>
+              
+              <div className="flex flex-col items-center gap-4 mb-4">
+                {localCustomization.profileImage ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Avatar className="w-24 h-24">
+                      <AvatarImage src={localCustomization.profileImage} alt="Profile" />
+                      <AvatarFallback>{localCustomization.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <Button variant="destructive" size="sm" onClick={handleRemoveImage}>
+                      Remove Image
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-2">
+                      <Image className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <p className="text-sm text-muted-foreground">No image selected</p>
+                  </div>
+                )}
+                
+                <div className="flex flex-col w-full">
+                  <input
+                    type="file"
+                    id="profile-image"
+                    ref={fileInputRef}
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <Button 
+                    variant="outline" 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full"
+                  >
+                    Choose Image
+                  </Button>
+                </div>
+                
+                <div className="text-xs text-muted-foreground">
+                  Recommended: Square image, max 5MB
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
