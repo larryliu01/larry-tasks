@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,26 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				teddy: {
+					light: '#FDE1D3',
+					DEFAULT: '#E6C9A8',
+					dark: '#D9B997'
+				},
+				lavender: {
+					light: '#E5DEFF',
+					DEFAULT: '#D6BCFA',
+					dark: '#B794F4'
+				},
+				peach: {
+					light: '#FFF0ED',
+					DEFAULT: '#FFDEE2',
+					dark: '#FFC2CE'
+				},
+				skyblue: {
+					light: '#E6F7FF',
+					DEFAULT: '#D3E4FD',
+					dark: '#A4CAFE'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +105,30 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'50%': { transform: 'rotate(3deg)' }
+				},
+				'bounce-small': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'wiggle': 'wiggle 1s ease-in-out',
+				'bounce-small': 'bounce-small 2s ease-in-out infinite'
+			},
+			fontFamily: {
+				'rounded': ['Nunito', 'sans-serif'],
+				'cute': ['Quicksand', 'sans-serif']
 			}
 		}
 	},
