@@ -1,5 +1,5 @@
 
-export type WeatherType = 'day' | 'night' | 'sunset' | 'cloudy' | 'rainy';
+export type WeatherType = 'day' | 'night' | 'sunset' | 'cloudy' | 'rainy' | 'snowy' | 'foggy';
 
 export type WeatherCondition = {
   type: WeatherType;
@@ -22,6 +22,7 @@ export type Task = {
   dueDate?: Date;
   category: string;
   createdAt: Date;
+  reminder?: Date;
 };
 
 export type Habit = {
@@ -33,6 +34,7 @@ export type Habit = {
   lastCompleted?: Date;
   daysCompleted: Date[];
   createdAt: Date;
+  reminder?: Date;
 };
 
 export type Goal = {
@@ -59,4 +61,29 @@ export type TeddyCustomization = {
   name: string;
   profileImage?: string;
   location: Location;
+  mood: 'happy' | 'excited' | 'neutral' | 'sad';
+};
+
+export type DailyAdvice = {
+  id: string;
+  text: string;
+  date: Date;
+  saved: boolean;
+};
+
+export type JournalEntry = {
+  id: string;
+  content: string;
+  mood: 'happy' | 'neutral' | 'sad' | 'excited' | 'calm' | 'angry';
+  date: Date;
+  tags: string[];
+};
+
+export type Reminder = {
+  id: string;
+  title: string;
+  time: Date;
+  completed: boolean;
+  taskId?: string;
+  habitId?: string;
 };

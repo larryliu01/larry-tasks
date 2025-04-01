@@ -1,71 +1,52 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 260 30% 96%;
+    --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
-
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-
-    --primary: 262 83.3% 57.8%;
+    --primary: 262.1 83.3% 57.8%;
     --primary-foreground: 210 20% 98%;
-
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
-
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
-
-    --accent: 262 25% 90%;
+    --accent: 220 14.3% 95.9%;
     --accent-foreground: 220.9 39.3% 11%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
-
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 262 83.3% 57.8%;
-
-    --radius: 1rem;
+    --ring: 262.1 83.3% 57.8%;
+    --radius: 0.75rem;
   }
-
+ 
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
-
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
-
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
-
-    --primary: 263 83.3% 65%;
+    --primary: 263.4 70% 50.4%;
     --primary-foreground: 210 20% 98%;
-
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
-
     --muted: 215 27.9% 16.9%;
     --muted-foreground: 217.9 10.6% 64.9%;
-
     --accent: 215 27.9% 16.9%;
     --accent-foreground: 210 20% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 20% 98%;
-
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
-    --ring: 263 83.3% 60%;
+    --ring: 263.4 70% 50.4%;
   }
 }
 
@@ -73,38 +54,183 @@
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground font-rounded;
+    @apply bg-background text-foreground;
   }
 }
 
-.task-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+@font-face {
+  font-family: 'Cute Font';
+  src: url('/fonts/cute-font.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-cute {
+  font-family: 'Cute Font', sans-serif;
 }
 
 .glass {
-  @apply bg-white/30 backdrop-blur-md border border-white/50 shadow-md;
+  @apply bg-white/40 backdrop-blur-md border border-white/20;
 }
 
+/* Weather Background Styles */
 .weather-day {
-  @apply bg-gradient-to-b from-skyblue-light to-peach-light;
+  @apply bg-gradient-to-b from-blue-300 to-blue-500;
 }
 
 .weather-night {
-  @apply bg-gradient-to-b from-slate-800 to-indigo-900;
+  @apply bg-gradient-to-b from-blue-900 to-indigo-900;
 }
 
 .weather-sunset {
-  @apply bg-gradient-to-b from-skyblue-light to-peach-dark;
+  @apply bg-gradient-to-b from-orange-300 via-pink-500 to-purple-700;
 }
 
 .weather-cloudy {
-  @apply bg-gradient-to-b from-slate-200 to-slate-300;
+  @apply bg-gradient-to-b from-gray-300 to-blue-400;
 }
 
 .weather-rainy {
-  @apply bg-gradient-to-b from-slate-400 to-slate-500;
+  @apply bg-gradient-to-b from-gray-500 to-blue-700;
+}
+
+.weather-snowy {
+  @apply bg-gradient-to-b from-blue-100 to-blue-300;
+}
+
+.weather-foggy {
+  @apply bg-gradient-to-b from-gray-300 to-gray-500;
+}
+
+/* Teddy colors */
+.bg-teddy {
+  background-color: #b56b45;
+}
+
+.bg-teddy-light {
+  background-color: #d7a78b;
+}
+
+.bg-teddy-dark {
+  background-color: #8c472a;
+}
+
+.bg-peach {
+  background-color: #ffc8a2;
+}
+
+.bg-peach-light {
+  background-color: #ffe0d1;
+}
+
+.bg-lavender {
+  background-color: #a29bfe;
+}
+
+.bg-lavender-light {
+  background-color: #c7c5f4;
+}
+
+.bg-lavender-dark {
+  background-color: #6c5ce7;
+}
+
+.bg-skyblue {
+  background-color: #74b9ff;
+}
+
+.bg-skyblue-light {
+  background-color: #a5d8ff;
+}
+
+.bg-skyblue-dark {
+  background-color: #0984e3;
+}
+
+/* Custom Animations */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce-small {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes rainfall {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes snowfall {
+  0% { transform: translateY(-10%) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(100vh) translateX(50px); opacity: 0; }
+}
+
+@keyframes cloud-float {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+
+@keyframes fog-float {
+  0% { transform: translateX(-50%); opacity: 0.2; }
+  50% { opacity: 0.4; }
+  100% { transform: translateX(50%); opacity: 0.2; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes jump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce-small {
+  animation: bounce-small 1s ease-in-out infinite;
+}
+
+.animate-rainfall {
+  animation: rainfall 1.5s linear infinite;
+}
+
+.animate-snowfall {
+  animation: snowfall 6s linear infinite;
+}
+
+.animate-cloud-float {
+  animation: cloud-float 60s linear infinite;
+}
+
+.animate-fog-float {
+  animation: fog-float 30s ease-in-out infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-jump {
+  animation: jump 0.5s ease-in-out;
 }
