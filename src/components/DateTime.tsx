@@ -1,9 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { Clock, Calendar as CalendarIcon } from 'lucide-react';
 
-const DateTime = () => {
+type DateTimeProps = {
+  timezone: string;
+};
+
+const DateTime = ({ timezone }: DateTimeProps) => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   
   useEffect(() => {
@@ -20,13 +25,13 @@ const DateTime = () => {
       <div className="flex items-center">
         <CalendarIcon className="mr-2 h-5 w-5 text-primary" />
         <span className="font-cute text-lg">
-          {format(currentDateTime, 'EEEE, MMMM d, yyyy')}
+          {formatInTimeZone(currentDateTime, timezone, 'EEEE, MMMM d, yyyy')}
         </span>
       </div>
       <div className="flex items-center">
         <Clock className="mr-2 h-5 w-5 text-primary" />
         <span className="font-cute text-lg">
-          {format(currentDateTime, 'h:mm:ss a')}
+          {formatInTimeZone(currentDateTime, timezone, 'h:mm:ss a')}
         </span>
       </div>
     </div>

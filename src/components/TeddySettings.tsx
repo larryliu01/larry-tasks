@@ -1,11 +1,19 @@
 
 import { useState, useRef } from 'react';
-import { TeddyCustomization, TeddyAccessory } from '@/types';
+import { TeddyCustomization, TeddyAccessory, Location } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Palette, ShoppingBag, User, Image } from 'lucide-react';
+import { Settings, Palette, ShoppingBag, User, Image, MapPin } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  Select, 
+  SelectTrigger, 
+  SelectContent, 
+  SelectItem, 
+  SelectValue 
+} from '@/components/ui/select';
+import { countries } from '@/utils/initialData';
 
 type TeddySettingsProps = {
   customization: TeddyCustomization;
@@ -16,6 +24,7 @@ type TeddySettingsProps = {
 const TeddySettings = ({ customization, onUpdateCustomization, accessories }: TeddySettingsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localCustomization, setLocalCustomization] = useState<TeddyCustomization>(customization);
+  const [selectedCountry, setSelectedCountry] = useState(customization.location.country);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   
@@ -82,6 +91,46 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
       fileInputRef.current.value = '';
     }
   };
+
+  const handleCountryChange = (value: string) => {
+    setSelectedCountry(value);
+    // Get first district of the selected country
+    const country = countries.find(c => c.name === value);
+    if (country && country.districts.length > 0) {
+      const district = country.districts[0];
+      setLocalCustomization({
+        ...localCustomization,
+        location: {
+          country: value,
+          district: district.name,
+          timezone: district.timezone
+        }
+      });
+    }
+  };
+
+  const handleDistrictChange = (value: string) => {
+    const country = countries.find(c => c.name === selectedCountry);
+    if (country) {
+      const district = country.districts.find(d => d.name === value);
+      if (district) {
+        setLocalCustomization({
+          ...localCustomization,
+          location: {
+            country: selectedCountry,
+            district: value,
+            timezone: district.timezone
+          }
+        });
+      }
+    }
+  };
+
+  // Get districts for the selected country
+  const getDistricts = () => {
+    const country = countries.find(c => c.name === selectedCountry);
+    return country ? country.districts : [];
+  };
   
   if (!isOpen) {
     return (
@@ -118,6 +167,10 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
             <TabsTrigger value="profileImage" className="flex items-center">
               <Image className="mr-2 h-4 w-4" />
               My Image
+            </TabsTrigger>
+            <TabsTrigger value="location" className="flex items-center">
+              <MapPin className="mr-2 h-4 w-4" />
+              Location
             </TabsTrigger>
           </TabsList>
           
@@ -242,6 +295,61 @@ const TeddySettings = ({ customization, onUpdateCustomization, accessories }: Te
                 
                 <div className="text-xs text-muted-foreground">
                   Recommended: Square image, max 5MB
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="location">
+            <div className="space-y-4">
+              <h3 className="font-medium mb-2">Set Your Location</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Choose your country and district to update the weather, date and time.
+              </p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium mb-1">Country</label>
+                  <Select 
+                    value={selectedCountry} 
+                    onValueChange={handleCountryChange}
+                  >
+                    <SelectTrigger id="country" className="w-full">
+                      <SelectValue placeholder="Select country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countries.map(country => (
+                        <SelectItem key={country.name} value={country.name}>
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <label htmlFor="district" className="block text-sm font-medium mb-1">District/City</label>
+                  <Select 
+                    value={localCustomization.location.district} 
+                    onValueChange={handleDistrictChange}
+                  >
+                    <SelectTrigger id="district" className="w-full">
+                      <SelectValue placeholder="Select district" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {getDistricts().map(district => (
+                        <SelectItem key={district.name} value={district.name}>
+                          {district.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="bg-muted p-3 rounded-md">
+                  <p className="text-sm text-muted-foreground">
+                    Current timezone: <span className="font-medium">{localCustomization.location.timezone}</span>
+                  </p>
                 </div>
               </div>
             </div>

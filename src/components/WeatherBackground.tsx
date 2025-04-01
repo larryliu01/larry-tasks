@@ -3,13 +3,19 @@ import { useEffect, useState } from 'react';
 import { WeatherType } from '@/types';
 import { Cloud, CloudRain, Moon, Sun, Sunset } from 'lucide-react';
 
-const WeatherBackground = () => {
+type WeatherBackgroundProps = {
+  timezone: string;
+};
+
+const WeatherBackground = ({ timezone }: WeatherBackgroundProps) => {
   const [weatherType, setWeatherType] = useState<WeatherType>('day');
 
   useEffect(() => {
-    // Get current time to determine if it's day or night
+    // Get current time to determine if it's day or night based on timezone
     const getCurrentWeather = () => {
-      const hour = new Date().getHours();
+      // Create a date object with the timezone
+      const options = { timeZone: timezone, hour: 'numeric', hour12: false } as const;
+      const hour = parseInt(new Intl.DateTimeFormat('en-US', options).format(new Date()));
       
       // Simple time-based weather for now
       if (hour >= 5 && hour < 8) {
@@ -37,7 +43,7 @@ const WeatherBackground = () => {
     const interval = setInterval(getCurrentWeather, 15 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [timezone]);
 
   const renderWeatherIcon = () => {
     switch (weatherType) {

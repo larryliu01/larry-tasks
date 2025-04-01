@@ -20,7 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
   return (
     <div className="min-h-screen py-6 px-4 md:px-8 max-w-7xl mx-auto">
-      <WeatherBackground />
+      <WeatherBackground timezone={teddyCustomization.location.timezone} />
       
       <header className="mb-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
@@ -36,7 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       </header>
       
       <div className="mb-6">
-        <DateTime />
+        <DateTime timezone={teddyCustomization.location.timezone} />
       </div>
       
       <main className="grid grid-cols-1 lg:grid-cols-7 gap-6">

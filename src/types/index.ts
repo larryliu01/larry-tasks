@@ -7,6 +7,12 @@ export type WeatherCondition = {
   icon: string;
 };
 
+export type Location = {
+  country: string;
+  district: string;
+  timezone: string;
+};
+
 export type Task = {
   id: string;
   title: string;
@@ -51,5 +57,6 @@ export type TeddyCustomization = {
   color: string;
   accessories: string[];
   name: string;
-  profileImage?: string; // Added this field for custom profile image
+  profileImage?: string;
+  location: Location;
 };

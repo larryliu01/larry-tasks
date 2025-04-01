@@ -1,6 +1,6 @@
 
 import { v4 as uuidv4 } from 'uuid';
-import { Task, Habit, Goal, TeddyCustomization, TeddyAccessory } from '@/types';
+import { Task, Habit, Goal, TeddyCustomization, TeddyAccessory, Location } from '@/types';
 
 // Initial sample data
 export const initialTasks: Task[] = [
@@ -62,12 +62,65 @@ export const initialAccessories: TeddyAccessory[] = [
   { id: 'crown', name: 'Royal Crown', type: 'hat', unlocked: false },
 ];
 
+export const initialLocation: Location = {
+  country: 'United States',
+  district: 'New York',
+  timezone: 'America/New_York',
+};
+
 export const initialCustomization: TeddyCustomization = {
   color: 'bg-teddy',
   accessories: ['hat'],
   name: 'Teddy',
-  profileImage: undefined, // Added profile image property (initially undefined)
+  profileImage: undefined,
+  location: initialLocation,
 };
+
+// List of countries and their districts with timezones
+export const countries = [
+  {
+    name: 'United States',
+    districts: [
+      { name: 'New York', timezone: 'America/New_York' },
+      { name: 'Los Angeles', timezone: 'America/Los_Angeles' },
+      { name: 'Chicago', timezone: 'America/Chicago' },
+      { name: 'Denver', timezone: 'America/Denver' },
+      { name: 'Honolulu', timezone: 'Pacific/Honolulu' },
+    ]
+  },
+  {
+    name: 'United Kingdom',
+    districts: [
+      { name: 'London', timezone: 'Europe/London' },
+      { name: 'Edinburgh', timezone: 'Europe/London' },
+      { name: 'Manchester', timezone: 'Europe/London' },
+    ]
+  },
+  {
+    name: 'Japan',
+    districts: [
+      { name: 'Tokyo', timezone: 'Asia/Tokyo' },
+      { name: 'Osaka', timezone: 'Asia/Tokyo' },
+      { name: 'Kyoto', timezone: 'Asia/Tokyo' },
+    ]
+  },
+  {
+    name: 'Australia',
+    districts: [
+      { name: 'Sydney', timezone: 'Australia/Sydney' },
+      { name: 'Melbourne', timezone: 'Australia/Melbourne' },
+      { name: 'Perth', timezone: 'Australia/Perth' },
+    ]
+  },
+  {
+    name: 'India',
+    districts: [
+      { name: 'Mumbai', timezone: 'Asia/Kolkata' },
+      { name: 'New Delhi', timezone: 'Asia/Kolkata' },
+      { name: 'Bangalore', timezone: 'Asia/Kolkata' },
+    ]
+  },
+];
 
 // Helper functions to handle localStorage
 export const loadFromStorage = <T,>(key: string, initialData: T): T => {
