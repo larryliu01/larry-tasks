@@ -11,6 +11,7 @@ type TaskSectionProps = {
   onAddTask: (task: Omit<Task, 'id' | 'completed' | 'createdAt'>) => void;
   onCompleteTask: (id: string, completed: boolean) => void;
   onDeleteTask: (id: string) => void;
+  onSetReminder?: (task: Task, reminderTime: Date) => void;
 };
 
 const TaskSection = ({
@@ -18,7 +19,8 @@ const TaskSection = ({
   uncompletedTasks,
   onAddTask,
   onCompleteTask,
-  onDeleteTask
+  onDeleteTask,
+  onSetReminder
 }: TaskSectionProps) => {
   return (
     <div>
