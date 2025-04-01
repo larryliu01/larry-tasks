@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Star, StarOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import SavedAdvices from '@/components/SavedAdvices';
 
 type DailyAdviceProps = {
   currentAdvice: DailyAdviceType;
@@ -65,7 +66,8 @@ const DailyAdvice = ({ currentAdvice, savedAdvices, onSaveAdvice }: DailyAdviceP
       <CardContent className="pb-2">
         <p className="text-base italic">"{currentAdvice.text}"</p>
       </CardContent>
-      <CardFooter className="pt-2 flex justify-end">
+      <CardFooter className="pt-2 flex justify-between">
+        <SavedAdvices savedAdvices={savedAdvices} onSaveAdvice={onSaveAdvice} />
         <Button 
           variant="ghost" 
           size="sm" 

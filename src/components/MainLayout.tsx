@@ -55,18 +55,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           <h1 className="text-3xl font-bold font-cute">Teddy Tasks</h1>
         </div>
         <div className="flex items-center gap-4">
-          {/* Hidden settings button */}
+          {/* Visible settings button */}
           <div className="relative">
             <button 
               onClick={() => setShowSettings(!showSettings)}
-              className="bg-transparent border-none p-0 m-0 cursor-pointer"
+              className="bg-transparent border-none p-2 m-0 cursor-pointer rounded-full hover:bg-white/20 transition-colors"
               aria-label="Settings"
             >
-              <Settings className="h-6 w-6 text-primary opacity-0" />
+              <Settings className="h-6 w-6 text-primary" />
             </button>
             
             {showSettings && (
-              <div className="absolute top-0 right-0 z-50">
+              <div className="absolute top-full right-0 mt-2 z-50">
                 <TeddySettings 
                   customization={teddyCustomization}
                   onUpdateCustomization={setTeddyCustomization}

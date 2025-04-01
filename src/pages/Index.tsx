@@ -12,6 +12,7 @@ import MainLayout from '@/components/MainLayout';
 import TaskSection from '@/components/TaskSection';
 import TeddySidebar from '@/components/TeddySidebar';
 import GoalTree from '@/components/GoalTree';
+import HabitTrackerWithReminder from '@/components/HabitTrackerWithReminder';
 
 const Index = () => {
   const { tasks, completedTasks, uncompletedTasks, addTask, completeTask, deleteTask } = useTasks();
@@ -56,6 +57,15 @@ const Index = () => {
             onUpdateGoal={updateGoal}
             onAddGoal={addGoal}
           />
+          
+          <div className="glass rounded-lg p-4">
+            <h3 className="text-lg font-medium mb-4">Habits</h3>
+            <HabitTrackerWithReminder 
+              habits={habits}
+              onCompleteHabit={completeHabit}
+              onSetReminder={setHabitReminder}
+            />
+          </div>
           
           <GoalTree goals={goals} />
         </div>

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckCircle, ListTodo } from 'lucide-react';
 import TaskCard from '@/components/TaskCard';
 import AddTaskForm from '@/components/AddTaskForm';
+import TaskReminderDialog from '@/components/TaskReminderDialog';
 
 type TaskSectionProps = {
   completedTasks: Task[];
@@ -45,14 +46,23 @@ const TaskSection = ({
               <p>You don't have any pending tasks. Add a new task to get started.</p>
             </div>
           ) : (
-            <div className="task-grid">
+            <div className="task-grid space-y-4">
               {uncompletedTasks.map(task => (
-                <TaskCard 
-                  key={task.id}
-                  task={task}
-                  onComplete={onCompleteTask}
-                  onDelete={onDeleteTask}
-                />
+                <div key={task.id} className="flex flex-col">
+                  <TaskCard 
+                    task={task}
+                    onComplete={onCompleteTask}
+                    onDelete={onDeleteTask}
+                  />
+                  {onSetReminder && (
+                    <div className="flex justify-end mt-2">
+                      <TaskReminderDialog 
+                        task={task}
+                        onSetReminder={onSetReminder}
+                      />
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           )}
