@@ -5,7 +5,7 @@ import { Task } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { initialTasks, loadFromStorage, saveToStorage } from '@/utils/initialData';
 
-export const useTasks = () => {
+export const useTasks = (gainExperience?: (amount: number) => void) => {
   const { toast } = useToast();
   
   const [tasks, setTasks] = useState<Task[]>(() => 
@@ -36,6 +36,18 @@ export const useTasks = () => {
     ));
     
     if (completed) {
+      // Award XP based on task priority
+      const task = tasks.find(t => t.id === id);
+      if (task && gainExperience) {
+        let xpAmount = 10; // Base XP
+        
+        // Award more XP for higher priority tasks
+        if (task.priority === 'medium') xpAmount = 20;
+        if (task.priority === 'high') xpAmount = 30;
+        
+        gainExperience(xpAmount);
+      }
+      
       toast({
         title: 'Task completed!',
         description: "Great job! Keep up the good work.",

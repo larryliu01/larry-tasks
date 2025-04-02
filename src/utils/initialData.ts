@@ -1,3 +1,4 @@
+
 import { v4 as uuidv4 } from 'uuid';
 import { Task, Habit, Goal, TeddyCustomization, TeddyAccessory, Location } from '@/types';
 
@@ -73,7 +74,10 @@ export const initialCustomization: TeddyCustomization = {
   name: 'Teddy',
   profileImage: undefined,
   location: initialLocation,
-  mood: 'happy', // Added the missing mood property
+  mood: 'happy',
+  level: 1,
+  experience: 0,
+  nextLevelExperience: 100,
 };
 
 // List of countries and their districts with timezones

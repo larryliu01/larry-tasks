@@ -62,6 +62,9 @@ export type TeddyCustomization = {
   profileImage?: string;
   location: Location;
   mood: 'happy' | 'excited' | 'neutral' | 'sad';
+  level: number;
+  experience: number;
+  nextLevelExperience: number;
 };
 
 export type DailyAdvice = {

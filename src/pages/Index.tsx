@@ -15,10 +15,13 @@ import GoalTree from '@/components/GoalTree';
 import HabitTrackerWithReminder from '@/components/HabitTrackerWithReminder';
 
 const Index = () => {
-  const { tasks, completedTasks, uncompletedTasks, addTask, completeTask, deleteTask } = useTasks();
-  const { habits, addHabit, completeHabit } = useHabits();
+  const { teddyCustomization, setTeddyCustomization, accessories, unlockAccessory, gainExperience } = useTeddyCustomization();
+  
+  // Pass the gainExperience function to hooks
+  const { tasks, completedTasks, uncompletedTasks, addTask, completeTask, deleteTask } = useTasks(gainExperience);
+  const { habits, addHabit, completeHabit } = useHabits(gainExperience);
+  
   const { goals, addGoal, updateGoal } = useGoals();
-  const { teddyCustomization, setTeddyCustomization, accessories, unlockAccessory } = useTeddyCustomization();
   const { currentAdvice, savedAdvices, saveAdvice } = useDailyAdvice();
   const { entries: journalEntries, addEntry: addJournalEntry } = useJournal();
   const { reminders, completeReminder, deleteReminder, setTaskReminder, setHabitReminder } = useReminders();
@@ -28,6 +31,27 @@ const Index = () => {
     const completedCount = tasks.filter(t => t.completed).length;
     unlockAccessory(completedCount);
   }, [tasks]);
+  
+  // When completing goals, also gain experience
+  const handleUpdateGoal = (id: string, progress: number) => {
+    const goal = goals.find(g => g.id === id);
+    if (goal) {
+      // Check if goal was just completed
+      const wasComplete = goal.progress >= goal.target;
+      const isNowComplete = progress >= goal.target;
+      
+      if (!wasComplete && isNowComplete && gainExperience) {
+        // Award significant XP for completing a goal
+        gainExperience(100);
+      } else if (progress > goal.progress && gainExperience) {
+        // Award small XP for progress
+        const progressDifference = progress - goal.progress;
+        gainExperience(progressDifference * 5);
+      }
+    }
+    
+    updateGoal(id, progress);
+  };
   
   return (
     <MainLayout 
@@ -54,7 +78,7 @@ const Index = () => {
             teddyCustomization={teddyCustomization}
             onCompleteHabit={completeHabit}
             onAddHabit={addHabit}
-            onUpdateGoal={updateGoal}
+            onUpdateGoal={handleUpdateGoal}
             onAddGoal={addGoal}
           />
           

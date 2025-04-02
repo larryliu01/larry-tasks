@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Task, Habit, TeddyCustomization } from '@/types';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
 
 type TeddyCharacterProps = {
   tasks: Task[];
@@ -60,7 +61,10 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
     "I believe in you!",
     "*happy squeaking noises*",
     "Yay! You're the best!",
-    "Let's make today productive!"
+    "Let's make today productive!",
+    `I'm level ${customization.level} now! Thank you for helping me grow!`,
+    "Complete more tasks to help me gain experience!",
+    "Each habit completion gives me strength to level up!"
   ];
 
   const handleInteraction = () => {
@@ -75,6 +79,12 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
       setAnimate(false);
     }, 2000);
   };
+
+  // Calculate exp percentage for progress bar
+  const expPercentage = Math.min(
+    100,
+    Math.round((customization.experience / customization.nextLevelExperience) * 100)
+  );
 
   return (
     <div className="flex flex-col items-center">
@@ -123,6 +133,11 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
             )}
             onClick={handleInteraction}
           >
+            {/* Level badge */}
+            <div className="absolute -top-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full border-2 border-white shadow-lg z-20 flex items-center justify-center">
+              <span className="text-sm font-bold">{customization.level}</span>
+            </div>
+            
             {/* Head */}
             <div 
               className={cn(
@@ -264,6 +279,15 @@ const TeddyCharacter = ({ tasks, habits, customization }: TeddyCharacterProps) =
         <div className="bg-white rounded-xl p-4 shadow-md max-w-[240px] text-center relative mt-4 min-h-[70px] glass">
           <div className="absolute w-4 h-4 bg-white -top-2 left-1/2 transform -translate-x-1/2 rotate-45"></div>
           <p className="text-sm font-cute">{message}</p>
+        </div>
+        
+        {/* Experience bar */}
+        <div className="mt-4 w-full max-w-[240px]">
+          <div className="flex justify-between text-xs mb-1">
+            <span>Level {customization.level}</span>
+            <span>{customization.experience}/{customization.nextLevelExperience} XP</span>
+          </div>
+          <Progress value={expPercentage} className="h-2" />
         </div>
       </div>
     </div>

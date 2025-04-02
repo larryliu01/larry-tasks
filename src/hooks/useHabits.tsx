@@ -5,7 +5,7 @@ import { Habit } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { initialHabits, loadFromStorage, saveToStorage } from '@/utils/initialData';
 
-export const useHabits = () => {
+export const useHabits = (gainExperience?: (amount: number) => void) => {
   const { toast } = useToast();
   
   const [habits, setHabits] = useState<Habit[]>(() => 
@@ -55,10 +55,24 @@ export const useHabits = () => {
         yesterday.setDate(yesterday.getDate() - 1);
         
         const isContinuous = lastDate.getTime() === yesterday.getTime();
+        const newStreak = isContinuous ? habit.streak + 1 : 1;
+        
+        // Award XP based on streak
+        if (gainExperience) {
+          // Base XP for completing a habit
+          let xpAmount = 15;
+          
+          // Bonus XP for maintaining streaks
+          if (newStreak > 1) {
+            xpAmount += Math.min(50, newStreak * 5); // Cap at 50 bonus XP
+          }
+          
+          gainExperience(xpAmount);
+        }
         
         return {
           ...habit,
-          streak: isContinuous ? habit.streak + 1 : 1,
+          streak: newStreak,
           lastCompleted: new Date(),
           daysCompleted: [...habit.daysCompleted, new Date()]
         };
@@ -75,6 +89,11 @@ export const useHabits = () => {
       
       if (!isDaily && habit.frequency === 'weekly' && isThisWeekCompleted) {
         return habit;
+      }
+      
+      // Award XP for weekly habits
+      if (gainExperience) {
+        gainExperience(30); // Weekly habits give more XP
       }
       
       return {

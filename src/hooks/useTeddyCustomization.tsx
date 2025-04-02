@@ -39,11 +39,42 @@ export const useTeddyCustomization = () => {
       }
     }
   };
+
+  const gainExperience = (amount: number) => {
+    setTeddyCustomization(prev => {
+      const newExperience = prev.experience + amount;
+      
+      // Check if the character should level up
+      if (newExperience >= prev.nextLevelExperience) {
+        const newLevel = prev.level + 1;
+        // Calculate next level experience requirement (increases with each level)
+        const nextLevelExperience = Math.floor(prev.nextLevelExperience * 1.5);
+        
+        toast({
+          title: 'Level Up!',
+          description: `${prev.name} has reached level ${newLevel}! Keep up the good work!`,
+        });
+        
+        return {
+          ...prev,
+          level: newLevel,
+          experience: newExperience - prev.nextLevelExperience,
+          nextLevelExperience,
+        };
+      }
+      
+      return {
+        ...prev,
+        experience: newExperience,
+      };
+    });
+  };
   
   return {
     teddyCustomization,
     setTeddyCustomization,
     accessories,
-    unlockAccessory
+    unlockAccessory,
+    gainExperience
   };
 };
